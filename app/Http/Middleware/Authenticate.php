@@ -23,7 +23,7 @@ class Authenticate extends Middleware
             $request->headers->set('Authorization', 'Bearer ' . $jwt);
         } else {
             return response()->json([
-                'message' => 'unathorized'
+                'message' => 'unauthorized'
             ]);
         }
         $this->authenticate($request, $guards);

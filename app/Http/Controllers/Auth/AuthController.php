@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -11,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-
     public function register(Request $request)
     {
         return User::create([
@@ -23,28 +23,47 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        if (!$user = User::where('email', $request->email)->first()) {
+            return response([
+                'message' => 'Email does not exist'
+            ]);
+        }    
+    
         if (!Auth::attempt($request->only("email", "password"))) {
             return response([
-                'message' => 'Invalid Credentials'
-            ], response::HTTP_UNAUTHORIZED);
+                'message' => 'Password is incorrect'
+            ]);
+        }
+    
+        $user = Auth::user();
+    
+        if (!$user->hasVerifiedEmail()) {
+            return response([
+                'message' => 'Email not verified'
+            ]);
         }
 
-        $user = Auth::user();
-
         $token = $user->createToken('token')->plainTextToken;
-
+    
         $cookie = cookie('jwt', $token, 60 * 40);
-
+    
         return response([
-            'message' => $token
+            'message' => 'success',
+            'token'=> $token
         ])->withCookie($cookie);
     }
+    
 
     public function user()
     {
         return Auth::user()->role;
     }
-    
+
     public function logout()
     {
         $cookie = Cookie::forget('jwt');
