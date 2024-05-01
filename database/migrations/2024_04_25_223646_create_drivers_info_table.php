@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vehicle_type', function (Blueprint $table) {
+        Schema::create('drivers_info', function (Blueprint $table) {
             $table->id();
-            $table->string('vehicle_type_name');
-            $table->integer('weight_limit');
-            $table->double('price', 10,2);
+            $table->unsignedBigInteger('driver_id');
+            $table->foreign('driver_id')->references('id')->on('users');
+            $table->string('license_number');
+            $table->string('license_expiry_date');
             $table->timestamps();
         });
     }

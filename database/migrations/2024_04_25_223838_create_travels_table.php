@@ -17,10 +17,18 @@ return new class extends Migration
             $table->foreign('booking_id')->references('id')->on('booking');
             $table->unsignedBigInteger('driver_id');
             $table->foreign('driver_id')->references('id')->on('users');
+            $table->unsignedBigInteger('vehicle_id');
+            $table->foreign('vehicle_id')->references('id')->on('vehicles');
             $table->unsignedBigInteger('admin_id');
             $table->foreign('admin_id')->references('id')->on('users');
-            $table->string('distance_traveled');
-            $table->string('route');
+
+            $table->date('pickup_date_time');
+            $table->string('pickup_goods_photo');
+            $table->date('dropoff_date_time');
+            $table->string('dropoff_goods_photo');
+
+            $table->string('signature_image');
+
             $table->enum('travel_status', ['in progress','delivering', 'delivered'])->nullable();
             $table->timestamps();
         });

@@ -42,11 +42,11 @@ class AuthController extends Controller
     
         $user = Auth::user();
     
-        if (!$user->hasVerifiedEmail()) {
-            return response([
-                'message' => 'Email not verified'
-            ]);
-        }
+        // if (!$user->hasVerifiedEmail()) {
+        //     return response([
+        //         'message' => 'Email not verified'
+        //     ]);
+        // }
 
         $token = $user->createToken('token')->plainTextToken;
     
@@ -57,7 +57,6 @@ class AuthController extends Controller
             'token'=> $token
         ])->withCookie($cookie);
     }
-    
 
     public function user()
     {

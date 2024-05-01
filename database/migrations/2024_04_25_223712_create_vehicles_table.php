@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('vehicles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('driver_id');
-            $table->foreign('driver_id')->references('id')->on('users');
             $table->unsignedBigInteger('vehicle_type_id');
             $table->foreign('vehicle_type_id')->references('id')->on('vehicle_type');
+            $table->string('model');
             $table->string('plate_number');
             $table->enum('vehicle_status', ['active', 'inactive', 'in repair']);
             $table->timestamps();

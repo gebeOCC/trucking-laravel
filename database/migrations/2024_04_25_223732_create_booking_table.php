@@ -21,6 +21,23 @@ return new class extends Migration
             $table->double('price', 10, 2);
             $table->string('pickup_type');
             $table->date('pick_up_date_time');
+
+            $table->string('pickup_location');
+            $table->string('pickup_location_address');
+            $table->string('sender_name');
+            $table->string('sender_contact_number');
+            $table->string('pickup_location_details');
+            
+            $table->string('dropoff_location');
+            $table->string('dropoff_location_address');
+            $table->string('recipient_name');
+            $table->string('recipient_contact_number');
+            $table->string('dropoff_location_details');
+
+
+            $table->double('distance', 10, 2);
+            $table->double('duration', 10, 2);
+
             $table->enum('booking_status', ['pending','approved']);
             $table->timestamps();
         });

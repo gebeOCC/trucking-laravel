@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departure', function (Blueprint $table) {
+        Schema::create('vehicle_type', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('travel_id');
-            $table->foreign('travel_id')->references('id')->on('travels');
-            $table->date('departure_date_time');
-            $table->string('goods_photo_pickup');
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->string('vehicle_type_name');
+            $table->string('vehicle_type_image');
+            $table->integer('weight_limit');
+            $table->double('price', 10,2);
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departure');
+        Schema::dropIfExists('vehicle_type');
     }
 };
