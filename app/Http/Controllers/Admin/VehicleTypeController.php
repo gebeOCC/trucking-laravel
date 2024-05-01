@@ -75,7 +75,7 @@ class VehicleTypeController extends Controller
                 'weight_limit'=> $request->weight_limit,
                 'price'=> $request->price,
             ]);
-            return response()->json(['message' => 'success'], 200);
+            return response()->json(['message' => 'Vehicle type updated successfully'], 200);
         }
     }
 
