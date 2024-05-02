@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('profile_picture');
+            $table->string('profile_picture')->default('profile-default.png');
             $table->string('phone_number');
             $table->string('first_name');
             $table->string('last_name');
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */

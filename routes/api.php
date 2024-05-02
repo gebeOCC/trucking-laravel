@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\VehicleTypeController;
+use App\Http\Controllers\Admin\VehiclesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,11 +23,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin
     Route::post('add-vehicle-type', [VehicleTypeController::class, 'addVehicleType']);
-    Route::post('get-vehicle-types', [VehicleTypeController::class, 'getVehicleTypes']);
+    Route::get('get-vehicle-types', [VehicleTypeController::class, 'getVehicleTypes']);
     Route::get('get-vehicle-type/{id}', [VehicleTypeController::class, 'getVehicleType']);
     Route::post('update-vehicle-type/{id}', [VehicleTypeController::class, 'updateVehicleType']);
-    Route::post('delete-vehicle-type/{id}', [VehicleTypeController::class, 'deleteVehicleType']); 
+    Route::post('delete-vehicle-type/{id}', [VehicleTypeController::class, 'deleteVehicleType']);
+
+    Route::get('get-vehicles', [VehiclesController::class, 'getVehicles']);
+    Route::post('add-vehicle', [VehiclesController::class, 'addVehicle']);
+    Route::get('get-vehicle/{id}', [VehiclesController::class, 'getVehicle']);
+    Route::post('update-vehicle/{id}', [VehiclesController::class, 'updateVehicle']);
+    Route::post('delete-vehicle/{id}', [VehiclesController::class, 'deleteVehicle']);
 });
 
 Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']); 
+Route::post('login', [AuthController::class, 'login']);
