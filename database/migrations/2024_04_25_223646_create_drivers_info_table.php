@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('driver_id');
             $table->foreign('driver_id')->references('id')->on('users');
             $table->string('license_number');
-            $table->string('license_expiry_date');
+            $table->date('license_expiry_date');
             $table->timestamps();
         });
     }
