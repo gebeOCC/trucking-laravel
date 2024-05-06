@@ -22,12 +22,13 @@ return new class extends Migration
             $table->unsignedBigInteger('admin_id');
             $table->foreign('admin_id')->references('id')->on('users');
 
-            $table->date('pickup_date_time');
-            $table->string('pickup_goods_photo');
-            $table->date('dropoff_date_time');
-            $table->string('dropoff_goods_photo');
+            $table->string('pickup_time')->nullable();
+            $table->string('pickup_goods_photo')->nullable();
 
-            $table->string('signature_image');
+            $table->string('dropoff_time')->nullable();
+            $table->string('dropoff_goods_photo')->nullable();
+
+            $table->string('signature_image')->nullable();
 
             $table->enum('travel_status', ['in progress','delivering', 'delivered'])->nullable();
             $table->timestamps();
