@@ -10,12 +10,12 @@ class AdminBookingController extends Controller
 {
     public function getBookings()
     {
-        $bookings = Booking::where('booking_status', '=', 'pending')
+        $bookings = Booking::select('booking.id','booking.pickup_type', 'booking.pickup_date', 'booking.pickup_time' )
+        ->selectRaw('CONCAT(users_profile.first_name, " ", users_profile.last_name) AS full_name')
+        ->join('users_profile', 'users_profile.user_id', '=', 'booking.client_id')
+        ->where('booking.booking_status', '=', 'pending')
         ->get();
 
-        return response([
-            'message' => 'success',
-            'bookings' => $bookings
-        ]);
+        return response($bookings);
     }
 }
