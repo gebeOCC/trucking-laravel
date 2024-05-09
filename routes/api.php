@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\VehiclesController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Admin\AdminBookingController;
+use App\Http\Controllers\Driver\DriverBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Client
     Route::post('add-booking', [BookingController::class,'addBooking']);
+
+    // Driver
+    Route::get('get-driver-bookings', [DriverBookingController::class, 'getDriverBookings']);
 });
 
 Route::post('register', [AuthController::class, 'register']);
