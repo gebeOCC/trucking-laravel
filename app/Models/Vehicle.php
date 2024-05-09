@@ -17,4 +17,9 @@ class Vehicle extends Model
         'plate_number',
         'vehicle_status',
     ];
+
+   public function travels()
+    {
+        return $this->hasMany(Travel::class, 'vehicle_id');
+    }
 }

@@ -38,5 +38,7 @@ class Booking extends Model
         'distance',
         'duration',
         'price',
+
+        'booking_status',
     ];
 }

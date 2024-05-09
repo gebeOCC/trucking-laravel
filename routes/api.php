@@ -48,6 +48,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('update-driver-profile/{id}', [DriverController::class, 'updateDriverProfile']);
 
     Route::get('get-bookings', [AdminBookingController::class, 'getBookings']);
+    Route::get('get-booking/{id}', [AdminBookingController::class, 'getBooking']);
+    Route::get('get-vehicles-assign/{id}', [AdminBookingController::class, 'getVehicles']);
+    Route::get('get-drivers-assign', [AdminBookingController::class, 'getDrivers']);
+    Route::post('add-travel', [AdminBookingController::class, 'addTravel']);
 
     // Client
     Route::post('add-booking', [BookingController::class,'addBooking']);

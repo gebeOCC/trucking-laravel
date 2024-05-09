@@ -30,7 +30,7 @@ return new class extends Migration
 
             $table->string('signature_image')->nullable();
 
-            $table->enum('travel_status', ['in progress','delivering', 'delivered'])->nullable();
+            $table->enum('travel_status', ['in progress','delivering', 'delivered'])->default('in progress');
             $table->timestamps();
         });
     }

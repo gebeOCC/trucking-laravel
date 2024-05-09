@@ -22,4 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password',
     ];
+
+    public function travels()
+    {
+        return $this->hasMany(Travel::class, 'driver_id');
+    }
 }
