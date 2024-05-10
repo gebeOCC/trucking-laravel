@@ -25,9 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
 
-
     Route::get('get-vehicle-types', [VehicleTypeController::class, 'getVehicleTypes']);
-
 
     // Admin
     Route::post('add-vehicle-type', [VehicleTypeController::class, 'addVehicleType']);
@@ -59,6 +57,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Driver
     Route::get('get-driver-bookings', [DriverBookingController::class, 'getDriverBookings']);
+    Route::get('get-travel-details/{id}', [DriverBookingController::class, 'getTravelDetails']);
+    Route::post('submit-pickup/{id}', [DriverBookingController::class, 'submitPickup']);
+    Route::post('submit-dropoff/{id}', [DriverBookingController::class, 'submitDropoff']);
 });
 
 Route::post('register', [AuthController::class, 'register']);

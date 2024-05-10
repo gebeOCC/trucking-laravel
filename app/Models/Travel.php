@@ -16,8 +16,10 @@ class Travel extends Model
         'driver_id',
         'vehicle_id',
         'admin_id',
+
         'pickup_time',
         'pickup_goods_photo',
+        
         'dropoff_time',
         'dropoff_goods_photo',
         'signature_image',

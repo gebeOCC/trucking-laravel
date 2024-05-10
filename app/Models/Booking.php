@@ -20,7 +20,7 @@ class Booking extends Model
 
         'vehicle_type_id',
         'goods_photo',
-
+        
         'pickup_location_lat',
         'pickup_location_lng',
         'pickup_location_address',
