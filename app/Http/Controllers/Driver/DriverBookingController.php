@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class DriverBookingController extends Controller
 {
     public function getDriverBookings(){
-        return Travel::select('travels.id', 'travels.booking_id', 'booking.pickup_date', 'booking.pickup_time', 'pickup_type')
+        return Travel::select('travels.id', 'travels.booking_id', 'booking.pickup_date', 'booking.pickup_time', 'pickup_type', 'booking.pickup_location_address')
         ->join('booking', 'booking.id', '=', 'travels.booking_id')
         ->whereIn('travels.travel_status', ['in progress', 'delivering'])
         ->where('travels.driver_id', '=', Auth::user()->id)
