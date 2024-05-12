@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Driver\DriverBookingController;
+use App\Http\Controllers\All\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ use App\Http\Controllers\Driver\DriverBookingController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('get-profile', [ProfileController::class, 'getProfile']);
 
     Route::get('get-vehicle-types', [VehicleTypeController::class, 'getVehicleTypes']);
 
@@ -54,6 +56,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Client
     Route::post('add-booking', [BookingController::class,'addBooking']);
+    Route::get('get-client-bookings', [BookingController::class, 'getClientBookings']);
+    Route::get('get-booking-details/{id}', [BookingController::class, 'getBookingDetails']);
 
     // Driver
     Route::get('get-driver-bookings', [DriverBookingController::class, 'getDriverBookings']);

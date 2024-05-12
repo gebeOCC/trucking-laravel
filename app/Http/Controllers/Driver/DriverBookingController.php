@@ -30,6 +30,7 @@ class DriverBookingController extends Controller
             'travels.pickup_goods_photo',
             'travels.dropoff_goods_photo',
             'travels.signature_image',
+            'travels.dropoff_time',
 
             'booking.pickup_date',
             'booking.pickup_time',
@@ -47,6 +48,7 @@ class DriverBookingController extends Controller
             'vehicles.model',
             'plate_number',
         )
+        ->selectRaw('travels.pickup_time AS travel_pickup_time')
             ->join('booking', 'booking.id', '=', 'travels.booking_id')
             ->join('vehicles', 'vehicles.id', '=', 'travels.vehicle_id')
             ->where('travels.id', $id)
