@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserProfile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -15,11 +16,32 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        return User::create([
+        if ($user = User::where('email', $request->email)->first()) {
+            return response([
+                'message' => 'Email exist'
+            ]);
+        } 
+
+        $user = User::create([
             "email" => $request->email,
             "password" => Hash::make($request->password),
             "role" => $request->role,
         ]);
+
+        UserProfile::create([
+            "user_id" => $user->id,
+            "phone_number" => $request->phone_number,
+            "first_name" => $request->first_name,
+            "last_name" => $request->last_name,
+            "date_of_birth" => $request->date_of_birth,
+            "gender" => $request->gender,
+            "province" => $request->province,
+            "city" => $request->city,
+            "barangay" => $request->barangay,
+            "zip" => $request->zip,
+        ]);
+
+        return response(['message' => 'success']);
     }
 
     public function login(Request $request)

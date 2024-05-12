@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('phone_number');
             $table->string('first_name');
             $table->string('last_name');
-            $table->date('date_of_birth');
-            $table->enum('gender', ['male','female']);
-            $table->string('barangay');
-            $table->string('city');
-            $table->string('province');
-            $table->string('zip');
+            $table->date('date_of_birth')->nullable();
+            $table->enum('gender', ['male','female'])->nullable();
+            $table->string('barangay')->nullable();
+            $table->string('city')->nullable();
+            $table->string('province')->nullable();
+            $table->string('zip')->nullable();
             $table->timestamps();
         });
     }
