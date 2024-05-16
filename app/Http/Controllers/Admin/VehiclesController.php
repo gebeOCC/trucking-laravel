@@ -29,12 +29,11 @@ class VehiclesController extends Controller
 
     public function updateVehicle(Request $request, $id){
         Vehicle::find($id)->update($request->all());
-        return response()->json(['message' => 'Vehicle updated successfully']);
+        return response()->json(['message' => 'success']);
     }
 
     public function deleteVehicle($id){
         Vehicle::find($id)->delete();
-        return response()->json(['message' => 'Vehicle deleted successfully']);
+        return response()->json(['message' => 'success']);
     }
-
 }
