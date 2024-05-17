@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\DriverInfo;
+use App\Models\Travel;
 use App\Models\UserProfile;
 use Illuminate\Support\Facades\Hash;
+use SebastianBergmann\CodeCoverage\Driver\Driver;
 
 class DriverController extends Controller
 {
@@ -26,6 +28,12 @@ class DriverController extends Controller
 
     public function addDriver(Request $request)
     {
+        if ($user = User::where('email', $request->email)->first()) {
+            return response([
+                'message' => 'Email exist'
+            ]);
+        }
+
         $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -55,7 +63,7 @@ class DriverController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Driver added successfully'
+            'message' => 'success'
         ]);
     }
 
@@ -66,24 +74,9 @@ class DriverController extends Controller
             ->first();
     }
 
-    public function updateUserProfile(Request $request, $id)
-    {
-        $user = UserProfile::find($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone_number = $request->phone_number;
-        $user->gender = $request->gender;
-        $user->province = $request->province;
-        $user->city = $request->city;
-        $user->barangay = $request->barangay;
-        $user->zip = $request->zip;
-        $user->user_id = $request->user_id;
-        $user->save();
-    }
-
     public function getDriverCredentials($id)
     {
-        return User::select('email')
+        return User::all()
             ->where('id', '=', $id)
             ->first();
     }
@@ -113,7 +106,7 @@ class DriverController extends Controller
             'city' => 'required|string',
             'province' => 'required|string',
             'zip' => 'required|string',
-            'profile_picture' => 'nullable|file|max:2048', // Add file validation rules as needed
+            'profile_picture' => 'nullable|file|max:2048',
         ]);
 
         try {
@@ -133,6 +126,79 @@ class DriverController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred while updating the driver profile'], 500);
         }
+    }
+
+    public function updateDriverInfo(Request $request, $id)
+    {
+        $userProfile = DriverInfo::findOrFail($id);
+        $userProfile->update([
+            'license_number' => $request->license_number,
+            'license_expiry_date' => $request->license_expiry_date,
+        ]);
+
+        return response([
+            'message' => 'Driver updated successfully'
+        ]);
+    }
+
+    public function updateDriverCredentials(Request $request, $id)
+    {
+
+        $userProfile = User::findOrFail($id);
+
+        if ($userProfile->email == $request->email) {
+            $userProfile->update([
+                'password' => Hash::make($request->password),
+            ]);
+        } else {
+            if (User::where('email', $request->email)->first()) {
+                return response([
+                    'message' => 'Email exist'
+                ]);
+            }
+
+            $userProfile->update([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+        }
+
+        return response([
+            'message' => 'Driver updated successfully'
+        ]);
+    }
+
+    public function getDriverTravels($id)
+    {
+        $driver_info = Travel::select('users_profile.profile_picture')
+            ->selectRaw('CONCAT(users_profile.first_name, " ", users_profile.last_name) AS driver_full_name')
+            ->join('users_profile', 'travels.driver_id', '=', 'users_profile.user_id')
+            ->first();
+
+        $travels = Travel::select('travels.id', 'travels.travel_status', 'booking.pickup_type', 'booking.pickup_date', 'booking.pickup_time')
+            ->selectRaw('CONCAT(users_profile.first_name, " ", users_profile.last_name) AS client_full_name')
+            ->join('booking', 'travels.booking_id', '=', 'booking.id')
+            ->orderBy('travels.updated_at', 'desc')
+            ->join('users_profile', 'booking.client_id', '=', 'users_profile.user_id')
+            ->where('travels.driver_id', $id)
+            ->get();
+
+        return response([
+            'travels' => $travels,
+            'driver_info' => $driver_info,
+        ]);
+    }
+
+    public function travelDetails($id)
+    {
+        return Travel::select('*')
+            ->join('booking', 'travels.booking_id', '=', 'booking.id')
+            ->selectRaw('travels.pickup_time AS travel_pickup_time')
+            ->selectRaw('CONCAT(users_profile.first_name, " ", users_profile.last_name) AS client_full_name')
+            ->join('vehicles', 'travels.vehicle_id', '=', 'vehicles.id')
+            ->join('users_profile', 'booking.client_id', '=', 'users_profile.user_id')
+            ->where('travels.id', '=', $id)
+            ->first();
     }
 
     private function uploadProfilePicture($file)

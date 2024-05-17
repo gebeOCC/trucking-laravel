@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\VehiclesController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Admin\AdminBookingController;
-use App\Http\Controllers\Driver\DriverBookingController;
+use App\Http\Controllers\Driver\DriverTravelController;
 use App\Http\Controllers\All\ProfileController;
 
 /*
@@ -47,6 +47,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-driver-credentials/{id}', [DriverController::class, 'getDriverCredentials']);
     Route::get('get-driver-info/{id}', [DriverController::class, 'getDriverInfo']);
     Route::post('update-driver-profile/{id}', [DriverController::class, 'updateDriverProfile']);
+    Route::post('update-driver-info/{id}', [DriverController::class, 'updateDriverInfo']);
+    Route::post('update-driver-credentials/{id}', [DriverController::class, 'updateDriverCredentials']);
+    Route::get('driver-travels/{id}', [DriverController::class, 'getDriverTravels']);
+    Route::get('travel-details/{id}', [DriverController::class, 'travelDetails']);
 
     Route::get('get-bookings', [AdminBookingController::class, 'getBookings']);
     Route::get('get-booking/{id}', [AdminBookingController::class, 'getBooking']);
@@ -60,10 +64,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-booking-details/{id}', [BookingController::class, 'getBookingDetails']);
 
     // Driver
-    Route::get('get-driver-bookings', [DriverBookingController::class, 'getDriverBookings']);
-    Route::get('get-travel-details/{id}', [DriverBookingController::class, 'getTravelDetails']);
-    Route::post('submit-pickup/{id}', [DriverBookingController::class, 'submitPickup']);
-    Route::post('submit-dropoff/{id}', [DriverBookingController::class, 'submitDropoff']);
+    Route::get('get-driver-bookings', [DriverTravelController::class, 'getDriverBookings']);
+    Route::get('get-travel-details/{id}', [DriverTravelController::class, 'getTravelDetails']);
+    Route::post('submit-pickup/{id}', [DriverTravelController::class, 'submitPickup']);
+    Route::post('submit-dropoff/{id}', [DriverTravelController::class, 'submitDropoff']);
 });
 
 Route::post('register', [AuthController::class, 'register']);

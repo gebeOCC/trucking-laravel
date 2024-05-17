@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Driver;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Travel;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
-class DriverBookingController extends Controller
+class DriverTravelController extends Controller
 {
     public function getDriverBookings()
     {
         return Travel::select('travels.id', 'travels.booking_id', 'booking.pickup_date', 'booking.pickup_time', 'pickup_type', 'booking.pickup_location_address', 'booking.dropoff_location_address', 'travels.travel_status')
-            ->join('booking', 'booking.id', '=', 'travels.booking_id')
-            ->where('travels.driver_id', '=', Auth::user()->id)
+        ->join('booking', 'booking.id', '=', 'travels.booking_id')
+        ->where('travels.driver_id', '=', Auth::user()->id)
             ->orderBy('booking.pickup_date', 'asc')
             ->get();
     }
@@ -46,14 +46,15 @@ class DriverBookingController extends Controller
             'vehicles.model',
             'plate_number',
         )
-        ->selectRaw('travels.pickup_time AS travel_pickup_time')
+            ->selectRaw('travels.pickup_time AS travel_pickup_time')
             ->join('booking', 'booking.id', '=', 'travels.booking_id')
             ->join('vehicles', 'vehicles.id', '=', 'travels.vehicle_id')
             ->where('travels.id', $id)
-            ->first();            
+            ->first();
     }
 
-    public function submitPickup (Request $request, $id) {
+    public function submitPickup(Request $request, $id)
+    {
         $fileName = $this->uploadGoodsPhoto($request->file('pickup_goods_photo'));
 
         Travel::where('id', $id)->update([
@@ -65,7 +66,8 @@ class DriverBookingController extends Controller
         return response(['message' => 'success']);
     }
 
-    public function submitDropoff(Request $request, $id) {
+    public function submitDropoff(Request $request, $id)
+    {
         $dopoffPhoto = $this->uploadGoodsPhoto($request->file('dropoff_goods_photo'));
         $signatureImage = $this->uploadSignature($request->file('signature_image'));
 
