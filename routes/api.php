@@ -7,21 +7,12 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\VehicleTypeController;
 use App\Http\Controllers\Admin\VehiclesController;
 use App\Http\Controllers\Admin\DriverController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Driver\DriverTravelController;
 use App\Http\Controllers\All\ProfileController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [AuthController::class, 'user']);
     Route::post('logout', [AuthController::class, 'logout']);
@@ -51,6 +42,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('update-driver-credentials/{id}', [DriverController::class, 'updateDriverCredentials']);
     Route::get('driver-travels/{id}', [DriverController::class, 'getDriverTravels']);
     Route::get('travel-details/{id}', [DriverController::class, 'travelDetails']);
+
+    Route::get('get-clients', [ClientController::class, 'getClients']);
+    Route::get('get-client-bookings/{id}', [ClientController::class, 'getClientBookings']);
+    Route::get('booking-details/{id}', [ClientController::class, 'bookingDetails']);
 
     Route::get('get-bookings', [AdminBookingController::class, 'getBookings']);
     Route::get('get-booking/{id}', [AdminBookingController::class, 'getBooking']);

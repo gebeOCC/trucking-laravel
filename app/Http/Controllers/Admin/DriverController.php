@@ -15,15 +15,13 @@ class DriverController extends Controller
 {
     public function getDrivers()
     {
-        $drivers = User::select('users.id', 'users.email')
+        return User::select('users.id', 'users.email')
             ->selectRaw('CONCAT(users_profile.first_name, " ", users_profile.last_name) AS full_name')
             ->addSelect('users_profile.phone_number', 'users_profile.profile_picture', 'drivers_info.license_expiry_date')
             ->join('users_profile', 'users_profile.user_id', '=', 'users.id')
             ->join('drivers_info', 'drivers_info.driver_id', '=', 'users.id')
             ->where('users.role', '=', 'driver')
             ->get();
-
-        return $drivers;
     }
 
     public function addDriver(Request $request)
@@ -183,9 +181,18 @@ class DriverController extends Controller
             ->where('travels.driver_id', $id)
             ->get();
 
+            $vehicleUsage = Travel::select('vehicle_id', 'model', 'vehicle_type_name')
+            ->selectRaw('COUNT(vehicle_id) AS travel_usage')
+            ->join('vehicles', 'vehicles.id', '=', 'travels.vehicle_id')
+            ->join('vehicle_type', 'vehicle_type.id', '=', 'vehicles.vehicle_type_id')
+            ->where('travels.driver_id', '=', $id)
+            ->groupBy('vehicle_id')
+            ->get();
+
         return response([
             'travels' => $travels,
             'driver_info' => $driver_info,
+            'vehicleUsage' => $vehicleUsage,
         ]);
     }
 

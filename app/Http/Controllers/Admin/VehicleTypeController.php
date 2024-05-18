@@ -14,10 +14,8 @@ class VehicleTypeController extends Controller
             $file = $request->file('vehicle_type_image');
             $randomName = md5(uniqid('', true));
 
-            // Generate a unique filename based on current date and time
-            $fileName = date('Ymd_His') . '_' . $randomName . '_' .$file->getClientOriginalName(); // Example: 20220501_165430_image.png
-
-            // Move uploaded file to public/vehicle-type-images directory
+            $fileName = date('Ymd_His') . '_' . $randomName . '_' .$file->getClientOriginalName();
+            
             $file->move(public_path('vehicle-type-images'), $fileName);
 
             VehicleType::create([
@@ -40,7 +38,6 @@ class VehicleTypeController extends Controller
 
     public function getVehicleType($id)
     {
-        // Assuming VehicleType model exists and uses Eloquent
         $vehicleType = VehicleType::find($id);
 
         if (!$vehicleType) {
@@ -55,10 +52,8 @@ class VehicleTypeController extends Controller
             $file = $request->file('vehicle_type_image');
             $randomName = md5(uniqid('', true));
 
-            // Generate a unique filename based on current date and time
             $fileName = date('Ymd_His') . '_' . $randomName . '_' . $file->getClientOriginalName(); // Example: 20220501_165430_image.png
 
-            // Move uploaded file to public/vehicle-type-images directory
             $file->move(public_path('vehicle-type-images'), $fileName);
 
             VehicleType::where('id', $id)->update([

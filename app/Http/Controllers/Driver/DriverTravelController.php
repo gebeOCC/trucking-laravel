@@ -42,7 +42,7 @@ class DriverTravelController extends Controller
             'booking.recipient_contact_number',
             'booking.dropoff_location_details',
             'booking.price',
-
+            
             'vehicles.model',
             'plate_number',
         )
