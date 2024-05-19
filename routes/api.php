@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\VehicleTypeController;
 use App\Http\Controllers\Admin\VehiclesController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Client\BookingController;
 use App\Http\Controllers\Admin\AdminBookingController;
 use App\Http\Controllers\Driver\DriverTravelController;
@@ -52,6 +53,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-vehicles-assign/{id}', [AdminBookingController::class, 'getVehicles']);
     Route::get('get-drivers-assign', [AdminBookingController::class, 'getDrivers']);
     Route::post('add-travel', [AdminBookingController::class, 'addTravel']);
+
+
+    Route::get('get-dashboard-data', [DashboardController::class, 'getDashboardData']);
 
     // Client
     Route::post('add-booking', [BookingController::class,'addBooking']);
