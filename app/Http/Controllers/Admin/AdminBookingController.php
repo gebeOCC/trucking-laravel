@@ -29,9 +29,9 @@ class AdminBookingController extends Controller
             ->where('booking.id', '=', $id)
             ->first();
 
-            if($booking->booking_status == 'approved'){
-                return response (['booking' => $booking]);
-            }
+        if ($booking->booking_status == 'approved') {
+            return response(['booking' => $booking]);
+        }
 
         $vehicle = Vehicle::select('vehicles.id', 'vehicles.model', 'vehicles.plate_number')
             ->with(['travels' => function ($query) {
@@ -98,5 +98,16 @@ class AdminBookingController extends Controller
         }
 
         return response(['message' => 'success']);
+    }
+
+    public function addMessage(Request $request, $id)
+    {
+        Booking::find($id)
+            ->update([
+                'message' => $request->message,
+                'booking_status' => 'declined',
+            ]);
+
+        return response()->json(['message' => 'success']);
     }
 }

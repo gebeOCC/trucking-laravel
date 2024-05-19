@@ -42,8 +42,10 @@ return new class extends Migration
             $table->double('duration', 10, 2);
             $table->double('price', 10, 2);
 
-            $table->enum('booking_status', ['pending','approved'])->default('pending');
+            $table->enum('booking_status', ['pending','approved','declined'])->default('pending');
             $table->timestamps();
+
+            $table->string('message')->nullable();
         });
     }
 

@@ -24,7 +24,7 @@ class VehiclesController extends Controller
     {
         Vehicle::create($request->all());
         
-        return response()->json(['message' => 'Vehicle addedd successfully']);
+        return response()->json(['message' => 'success']);
     }
 
     public function updateVehicle(Request $request, $id){

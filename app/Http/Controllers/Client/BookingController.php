@@ -58,6 +58,12 @@ class BookingController extends Controller
 
     public function getClientBookings()
     {
+        $declined = Booking::select('id', 'booking_status', 'pickup_date', 'pickup_time', 'pickup_location_address', 'dropoff_location_address', 'goods_photo', 'message')
+            ->where('client_id', '=', Auth::user()->id)
+            ->where('booking_status', '=', 'declined')
+            ->orderBy('booking.created_at', 'desc')
+            ->get();
+
         $pending = Booking::select('booking_status', 'pickup_date', 'pickup_time', 'pickup_location_address', 'dropoff_location_address', 'goods_photo')
             ->where('client_id', '=', Auth::user()->id)
             ->where('booking_status', '=', 'pending')
@@ -79,7 +85,12 @@ class BookingController extends Controller
             ->orderBy('travels.updated_at', 'desc')
             ->get();
 
-        return response(['pending' => $pending, 'approved' => $approved, 'delivered' => $delivered]);
+        return response([
+            'declined' => $declined,
+            'pending' => $pending,
+            'approved' => $approved,
+            'delivered' => $delivered
+        ]);
     }
 
     public function getBookingDetails($id)
@@ -115,6 +126,46 @@ class BookingController extends Controller
             ->join('vehicles', 'travels.vehicle_id', '=', 'vehicles.id')
             ->join('users_profile', 'travels.driver_id', '=', 'users_profile.user_id')
             ->where('booking.id', $id)
+            ->first();
+    }
+
+    public function updateBooking(Request $request, $id)
+    {
+        Booking::findOrFail($id)
+            ->update([
+                'pickup_type' => $request->pickup_type,
+                'pickup_date' => $request->pickup_date,
+                'pickup_time' => $request->pickup_time,
+
+                'vehicle_type_id' => $request->vehicle_type_id,
+
+                'pickup_location_lat' => $request->pickup_location_lat,
+                'pickup_location_lng' => $request->pickup_location_lng,
+                'pickup_location_address' => $request->pickup_location_address,
+                'sender_name' => $request->sender_name,
+                'sender_contact_number' => $request->sender_contact_number,
+                'pickup_location_details' => $request->pickup_location_details,
+
+                'dropoff_location_lat' => $request->dropoff_location_lat,
+                'dropoff_location_lng' => $request->dropoff_location_lng,
+                'dropoff_location_address' => $request->dropoff_location_address,
+                'recipient_name' => $request->recipient_name,
+                'recipient_contact_number' => $request->recipient_contact_number,
+                'dropoff_location_details' => $request->dropoff_location_details,
+
+                'distance' => $request->distance,
+                'duration' => $request->duration,
+                'price' => $request->price,
+                'booking_status' => 'pending',
+            ]);
+
+        return response(['message' => 'success']);
+    }
+
+    public function getDeclinedBookingDetails($id)
+    {
+        return Booking::select("*")
+            ->where('id', '=', $id)
             ->first();
     }
 }

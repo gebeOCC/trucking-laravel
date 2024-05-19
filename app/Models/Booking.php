@@ -40,5 +40,7 @@ class Booking extends Model
         'price',
 
         'booking_status',
+
+        'message',
     ];
 }

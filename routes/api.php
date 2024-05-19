@@ -53,14 +53,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('get-vehicles-assign/{id}', [AdminBookingController::class, 'getVehicles']);
     Route::get('get-drivers-assign', [AdminBookingController::class, 'getDrivers']);
     Route::post('add-travel', [AdminBookingController::class, 'addTravel']);
-
+    Route::post('add-message/{id}', [AdminBookingController::class, 'addMessage']);
 
     Route::get('get-dashboard-data', [DashboardController::class, 'getDashboardData']);
 
     // Client
-    Route::post('add-booking', [BookingController::class,'addBooking']);
+    Route::post('add-booking', [BookingController::class, 'addBooking']);
+    Route::post('edit-booking', [BookingController::class, 'editBooking']);
     Route::get('get-client-bookings', [BookingController::class, 'getClientBookings']);
     Route::get('get-booking-details/{id}', [BookingController::class, 'getBookingDetails']);
+    Route::get('get-declined-booking-details/{id}', [BookingController::class, 'getDeclinedBookingDetails']);
+    Route::post('update-booking/{id}', [BookingController::class, 'updateBooking']);
 
     // Driver
     Route::get('get-driver-bookings', [DriverTravelController::class, 'getDriverBookings']);
